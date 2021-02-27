@@ -1,0 +1,473 @@
+mads 2.0.6 build 58 (28 Jan 17)
+Source: C:\Users\dogdark\eclipse-workspace\misproyectos\tt\tt.asm
+     1 = F2B0			PRINTBYTE = $F2B0
+     2 = F2F8			GETBYTE = $F2F8
+     3 					icl 'base/sys_equates.m65'
+Source: C:\Users\dogdark\eclipse-workspace\misproyectos\tt\base\sys_equates.m65
+     1 				;================================================================================
+     2 				; System equates, Atari XL + mads [NRV 2009]
+     3 				;================================================================================
+     4
+     5 				;----------------------------------------
+     6 				; GTIA:
+     7 				;----------------------------------------
+     8
+     9 = D000			M0PF	= $D000  ; read only
+    10 = D001			M1PF	= $D001  ; read only
+    11 = D002			M2PF	= $D002  ; read only
+    12 = D003			M3PF	= $D003  ; read only
+    13
+    14 = D004			P0PF	= $D004  ; read only
+    15 = D005			P1PF	= $D005  ; read only
+    16 = D006			P2PF	= $D006  ; read only
+    17 = D007			P3PF	= $D007  ; read only
+    18
+    19 = D008			M0PL	= $D008  ; read only
+    20 = D009			M1PL	= $D009  ; read only
+    21 = D00A			M2PL	= $D00A  ; read only
+    22 = D00B			M3PL	= $D00B  ; read only
+    23
+    24 = D00C			P0PL	= $D00C  ; read only
+    25 = D00D			P1PL	= $D00D  ; read only
+    26 = D00E			P2PL	= $D00E  ; read only
+    27 = D00F			P3PL	= $D00F  ; read only
+    28
+    29 = D010			TRIG0	= $D010  ; read only
+    30 = D011			TRIG1	= $D011  ; read only
+    31 = D012			TRIG2	= $D012  ; read only
+    32 = D013			TRIG3	= $D013  ; read only
+    33
+    34 = D014			PAL		= $D014  ; read only
+    35
+    36 				; positions for normal screen: 48 left (+160)--> 208 right (or 32-->224 for wide playfield)
+    37 				; 32 top (+192)--> 224 bottom (or 16-->112 for double line resolution)
+    38 = D000			HPOSP0	= $D000  ; write only
+    39 = D001			HPOSP1	= $D001  ; write only
+    40 = D002			HPOSP2	= $D002  ; write only
+    41 = D003			HPOSP3	= $D003  ; write only
+    42
+    43 = D004			HPOSM0	= $D004  ; write only
+    44 = D005			HPOSM1	= $D005  ; write only
+    45 = D006			HPOSM2	= $D006  ; write only
+    46 = D007			HPOSM3	= $D007  ; write only
+    47
+    48 				; 0 (or 2) normal width, 1 double width, 4 quadruple width
+    49 = D008			SIZEP0	= $D008  ; write only
+    50 = D009			SIZEP1	= $D009  ; write only
+    51 = D00A			SIZEP2	= $D00A  ; write only
+    52 = D00B			SIZEP3	= $D00B  ; write only
+    53
+    54 = D00C			SIZEM	= $D00C  ; write only		// the same 2 bits as the players, but in one byte, in this order: m3m2m1m0
+    55
+    56 = D00D			GRAFP0	= $D00D  ; write only
+    57 = D00E			GRAFP1	= $D00E  ; write only
+    58 = D00F			GRAFP2	= $D00F  ; write only
+    59 = D010			GRAFP3	= $D010  ; write only
+    60
+    61 = D011			GRAFM	= $D011  ; write only		// 4 missiles in this order: m3m2m1m0
+    62
+    63 = D012			COLPM0	= $D012  ; write only
+    64 = D013			COLPM1	= $D013  ; write only
+    65 = D014			COLPM2	= $D014  ; write only
+    66 = D015			COLPM3	= $D015  ; write only
+    67
+    68 = D016			COLPF0	= $D016  ; write only
+    69 = D017			COLPF1	= $D017  ; write only
+    70 = D018			COLPF2	= $D018  ; write only
+    71 = D019			COLPF3	= $D019  ; write only
+    72
+    73 = D01A			COLBK	= $D01A  ; write only
+    74
+    75 = D01B			PRIOR	= $D01B  ; write only
+    76 = D01C			VDELAY	= $D01C  ; write only
+    77 = D01D			GRACTL	= $D01D  ; write only
+    78 = D01E			HITCLR	= $D01E  ; write only
+    79
+    80 = D01F			CONSOL	= $D01F  ; read and write
+    81
+    82 				;----------------------------------------
+    83 				; POKEY:
+    84 				;----------------------------------------
+    85
+    86 = D200			POT0	= $D200  ; read only
+    87 = D201			POT1	= $D201  ; read only
+    88 = D202			POT2	= $D202  ; read only
+    89 = D203			POT3	= $D203  ; read only
+    90 = D204			POT4	= $D204  ; read only
+    91 = D205			POT5	= $D205  ; read only
+    92 = D206			POT6	= $D206  ; read only
+    93 = D207			POT7	= $D207  ; read only
+    94
+    95 = D208			ALLPOT	= $D208  ; read only
+    96
+    97 = D209			KBCODE	= $D209  ; read only
+    98 = D20A			RANDOM	= $D20A  ; read only
+    99
+   100 = D20D			SERIN	= $D20D  ; read only
+   101 = D20E			IRQST	= $D20E  ; read only
+   102 = D20F			SKSTAT	= $D20F  ; read only
+   103
+   104
+   105 = D200			AUDF1	= $D200  ; write only
+   106 = D201			AUDC1	= $D201  ; write only
+   107 = D202			AUDF2	= $D202  ; write only
+   108 = D203			AUDC2	= $D203  ; write only
+   109 = D204			AUDF3	= $D204  ; write only
+   110 = D205			AUDC3	= $D205  ; write only
+   111 = D206			AUDF4	= $D206  ; write only
+   112 = D207			AUDC4	= $D207  ; write only
+   113
+   114 = D208			AUDCTL	= $D208  ; write only
+   115
+   116 = D209			STIMER	= $D209  ; write only
+   117 = D20A			SKREST	= $D20A  ; write only
+   118 = D20B			POTGO	= $D20B  ; write only
+   119
+   120 = D20D			SEROUT	= $D20D  ; write only
+   121 = D20E			IRQEN	= $D20E  ; write only
+   122 = D20F			SKCTL	= $D20F  ; write only
+   123
+   124 				;----------------------------------------
+   125 				; PIA:
+   126 				;----------------------------------------
+   127
+   128 = D300			PORTA	= $D300  ; read and write
+   129 = D301			PORTB	= $D301  ; read and write
+   130 = D302			PACTL	= $D302  ; read and write
+   131 = D303			PBCTL	= $D303  ; read and write
+   132
+   133 				;----------------------------------------
+   134 				; ANTIC:
+   135 				;----------------------------------------
+   136
+   137 = D40B			VCOUNT	= $D40B  ; read only
+   138
+   139 = D40C			PENH	= $D40C  ; read only
+   140 = D40D			PENV	= $D40D  ; read only
+   141
+   142 = D40F			NMIST	= $D40F  ; read only
+   143
+   144
+   145 = D400			DMACTL	= $D400  ; write only
+   146 = D401			CHACTL	= $D401  ; write only
+   147 = D402			DLISTL	= $D402  ; write only
+   148 = D403			DLISTH	= $D403  ; write only
+   149 = D404			HSCROL	= $D404  ; write only
+   150 = D405			VSCROL	= $D405  ; write only
+   151 = D407			PMBASE	= $D407  ; write only
+   152 = D409			CHBASE	= $D409  ; write only
+   153 = D40A			WSYNC	= $D40A  ; write only
+   154 = D40E			NMIEN	= $D40E  ; write only
+   155 = D40F			NMIRES	= $D40F  ; write only
+   156
+   157 				;----------------------------------------
+   158 				; Shadow registers:
+   159 				;----------------------------------------
+   160
+   161 = 022F			SDMCTL	= $22f	; shadow of DMACTL
+   162 = 026F			GPRIOR	= $26f	; shadow of PRIOR
+   163
+   164 = 02C0			PCOLR0	= $2c0	; shadow of COLPM0
+   165 = 02C1			PCOLR1  = $2c1
+   166 = 02C2			PCOLR2  = $2c2
+   167 = 02C3			PCOLR3  = $2c3
+   168 = 02C4			COLOR0	= $2c4	; shadow of COLPF0
+   169 = 02C5			COLOR1  = $2c5
+   170 = 02C6			COLOR2  = $2c6
+   171 = 02C7			COLOR3  = $2c7
+   172 = 02C8			COLOR4  = $02C8
+   173
+   174
+   175 = 0014			RTCLOCK	= 20
+   176 = 004D			ATRACT	= 77
+   177
+   178 = 02F4			CHBAS	= 756	; shadow of CHBASE
+   179 = 02FC			CH		= 764
+   180 = 02F3			CHACT	= 755
+   181 = 03F8			BASICF  = $3f8
+   182 = 03FA			GINTLK  = $3fa
+   183
+   184
+   185 = 0230			SDLSTL	= $230	; display list address
+   186 = 0200			VDSLST	= $200	; DLI address
+   187
+   188 = 0270			PADDL0	= 624	; 0-228 , shadow of POT0
+   189 = 027C			PTRIG0	= 636	; 0 = PRESSED , shadow of PTRG0
+   190 = 0278			STICK0	= 632	; 0000 = RLDU , shadow of PORTA
+   191 = 0284			STRIG0	= 644	; 0 = PRESSED , shadow of TRIG0
+   192
+   193 = 0244			COLDST	= 580	; non zero --> do a cold start when pressing the reset key
+   194
+   195 				;----------------------------------------
+   196 				; VBI:
+   197 				;----------------------------------------
+   198
+   199 = E45C			SETVBV			= $E45C
+   200 = E45F			XITVB_I			= $E45F
+   201 = E45F			SYSVBV			= $E45F
+   202 = E462			XITVB_D			= $E462
+   203 = E462			XITVBV			= $E462
+   204 = 0006			VBI_I			= 6
+   205 = 0007			VBI_D			= 7
+   206 = C0E2			NORMAL_VBI_I	= 49378
+   207 = C28A			NORMAL_VBI_D	= 49802
+   208 = 0222			VVBLKI			= 546
+   209 = 0224			VVBLKD			= 548
+   210 = E462			XITVB			= XITVB_D
+   211
+   212 				;----------------------------------------
+   213 				; Handler vectors:
+   214 				;----------------------------------------
+   215
+   216 = FFFA			NMIH_VECTOR		= 65530
+   217 = FFFC			RESH_VECTOR		= 65532
+   218 = FFFE			IRQH_VECTOR		= 65534
+   219
+   220 				;----------------------------------------
+   221 				; Generic values
+   222 				;----------------------------------------
+   223
+   224 = 02E0			RUNAD  = $02E0
+   225 = 02E2			INITAD = $02E2
+   226
+   227 				;----------------------------------------
+   228 				; I/O:
+   229 				;----------------------------------------
+   230
+   231 = E456			CIOV			= $E456	; (58454)
+   232 = E459			SIOV			= $E459	; (58457)
+   233
+   234 				;----------------------------------------
+   235 				; Bit values:
+   236 				;----------------------------------------
+   237
+   238 				; DMA values
+   239 = 0020			DV_DMA_ON			= %00100000
+   240 = 0010			DV_PM_ONE_LINE		= %00010000
+   241 = 0008			DV_PLAYERS_ON		= %00001000
+   242 = 0004			DV_MISSILES_ON		= %00000100
+   243 = 0003			DV_WIDE_PF			= %00000011
+   244 = 0002			DV_NORMAL_PF		= %00000010
+   245 = 0001			DV_NARROW_PF		= %00000001
+   246
+   247 				; Display list values
+   248 = 0080			DL_DLI_MASK		= %10000000
+   249 = 0040			DL_LMS_MASK		= %01000000
+   250 = 0020			DL_VSCROLL_MASK	= %00100000
+   251 = 0010			DL_HSCROLL_MASK	= %00010000
+   252
+   253 = 0001			DL_JMP		= 1
+   254 = 0041			DL_JVB		= 65
+   255
+   256 = 0000			DL_BLANK_1	= 0
+   257 = 0010			DL_BLANK_2	= 16
+   258 = 0020			DL_BLANK_3	= 32
+   259 = 0030			DL_BLANK_4	= 48
+   260 = 0040			DL_BLANK_5	= 64
+   261 = 0050			DL_BLANK_6	= 80
+   262 = 0060			DL_BLANK_7	= 96
+   263 = 0070			DL_BLANK_8	= 112
+   264
+   265 				; Antic graphic modes
+   266 = 0002			GM_CHAR_A2	= 2			; 2 colors, 40x24, 960b, 40xline, 8 scanlines
+   267 = 0006			GM_CHAR_A6	= 6			; 4 colors, 20x24, 480b, 40xline, 8 scanlines
+   268 = 0007			GM_CHAR_A7	= 7			; 4 colors, 20x12, 240b, 20xline, 16 scanlines
+   269 = 0004			GM_CHAR_A4	= 4			; 5 colors, 40x24, 960b, 40xline, 8 scanlines
+   270 = 0005			GM_CHAR_A5	= 5			; 5 colors, 40x12, 480b, 40xline, 16 scanlines
+   271 = 0003			GM_CHAR_A3	= 3			; 2 colors, 40x24, 760b, 40xline, 10 scanlines
+   272
+   273 				; Basic graphic modes
+   274 = 0002			GM_CHAR_G0	= 2			; 2 colors, 40x24, 960b, 40xline, 8 scanlines
+   275 = 0006			GM_CHAR_G1	= 6			; 4 colors, 20x24, 480b, 40xline, 8 scanlines
+   276 = 0007			GM_CHAR_G2	= 7			; 4 colors, 20x12, 240b, 20xline, 16 scanlines
+   277 = 0004			GM_CHAR_G12	= 4			; 5 colors, 40x24, 960b, 40xline, 8 scanlines
+   278 = 0005			GM_CHAR_G13	= 5			; 5 colors, 40x12, 480b, 40xline, 16 scanlines
+   279
+   280 = 0008			GM_PIXEL_G3	= 8			; 4 colors, 40x24, 240b, 10xline, 8 scanline
+   281 = 0009			GM_PIXEL_G4	= 9			; 2 colors, 80x48, 480b, 10xline, 4 scanline
+   282 = 000A			GM_PIXEL_G5	= 10		; 4 colors, 80x48, 960b, 20xline, 4 scanline
+   283 = 000B			GM_PIXEL_G6	= 11		; 2 colors, 160x96, 1920b, 20xline, 2 scanline
+   284 = 000D			GM_PIXEL_G7	= 13		; 4 colors, 160x96, 3840b, 40xline, 2 scanline
+   285 = 000F			GM_PIXEL_G8	= 15		; 2 colors, 320x192, 7680b, 40xline, 1 scanline
+   286 = 000C			GM_PIXEL_G14	= 12	; 2 colors, 160x192, 3840b, 20xline, 1 scanline
+   287 = 000E			GM_PIXEL_G15	= 14	; 4 colors, 160x192, 7680b, 40xline, 1 scanline
+   288
+   289 = 000F			GM_PIXEL_G9	= 15		; 1 color, 80x192, 7680b, 40xline, 1 scanline
+   290 = 000F			GM_PIXEL_G10	= 15	; 9 colors, 80x192, 7680b, 40xline, 1 scanline
+   291 = 000F			GM_PIXEL_G11	= 15	; 16 colors, 80x192, 7680b, 40xline, 1 scanline
+   292
+   293 				; Prior values
+   294 = 0001			PRV_PM_PRIORITY_1	= %00000001		; p0 p1 p2 p3 / pf0 pf1 pf2 pf3 (p5) / bk
+   295 = 0002			PRV_PM_PRIORITY_2	= %00000010		; p0 p1 / pf0 pf1 pf2 pf3 (p5) / p2 p3 / bk
+   296 = 0004			PRV_PM_PRIORITY_3	= %00000100		; pf0 pf1 pf2 pf3 (p5) /  p0 p1 p2 p3 / bk
+   297 = 0008			PRV_PM_PRIORITY_4	= %00001000		; pf1 pf2 /  p0 p1 p2 p3 / pf0 pf3 (p5) / bk
+   298 = 0010			PRV_FIFTH_PLAYER	= %00010000
+   299 = 0020			PRV_PM_OVERLAP		= %00100000
+   300 = 0040			PRV_GTIA_9			= %01000000
+   301 = 0080			PRV_GTIA_10			= %10000000
+   302 = 00C0			PRV_GTIA_11			= %11000000
+   303
+   304 				; Gractl values
+   305 = 0001			GCTL_MISSILES		= %001
+   306 = 0002			GCTL_PLAYERS		= %010
+   307 = 0004			GCTL_LATCH_TRIGGERS	= %100
+   308
+   309 				; Consol values:
+   310 = 0001			CNV_START_MASK		= %001
+   311 = 0002			CNV_OPTION_MASK		= %010
+   312 = 0004			CNV_SELECT_MASK		= %100
+   313
+   314 				; Stick values:
+   315 = 0008			STV_RIGHT_MASK		= %1000
+   316 = 0004			STV_LEFT_MASK		= %0100
+   317 = 0002			STV_DOWN_MASK		= %0010
+   318 = 0001			STV_UP_MASK			= %0001
+   319
+   320 = 0008			STICK_MASK_RIGHT	= %1000
+   321 = 0004			STICK_MASK_LEFT		= %0100
+   322 = 0002			STICK_MASK_DOWN		= %0010
+   323 = 0001			STICK_MASK_UP		= %0001
+   324
+   325 = 0007			STICK_VALUE_RIGHT	= %0111
+   326 = 000B			STICK_VALUE_LEFT	= %1011
+   327 = 000D			STICK_VALUE_DOWN	= %1101
+   328 = 000E			STICK_VALUE_UP		= %1110
+   329
+   330 				/*
+   331 				KBCode Hexadecimal Values
+   332 				 	$00	$01	$02	$03	$04	$05	$06	$07	$08	$09	$0A	$0B	$0C	$0D	$0E	$0F
+   333 				$00	L	J	;	F1	F2	K	+	*	O	 	P	U	CR	I	-	=
+   334 				$10	V	Hlp	C	F3	F4	B	X	Z	4	 	3	6	Esc	5	2	1
+   335 				$20	,	Spc	.	N	 	M	/	Inv	R	 	E	Y	Tab	T	W	Q
+   336 				$30	9	 	0	7	BS	8	<	>	F	H	D	 	Cap	G	S	A
+   337
+   338 				together with Shift Key: add +$40
+   339 				together with Control key: add +$80 
+   340 				*/
+   340
+   341
+   342 				; 
+   343 				; OS VARIABLES FOR XL/XE
+   344 				;
+   345 = 0041			SOUNDR      = $0041
+   346 = 0218			CDTMV1      = $0218
+   347 = 021A			CDTMV2      = $021A
+   348 = 021C			CDTMV3      = $021C
+   349 = 021E			CDTMV4      = $021E
+   350 = 0220			CDTMV5      = $0220
+   351
+   352 				; 
+   353 				; ROM VECTORS
+   354 				; 
+   355
+   356 = E477			COLDSV      = $E477
+     4 					icl 'paginas/romram.asm'
+Source: C:\Users\dogdark\eclipse-workspace\misproyectos\tt\paginas\romram.asm
+     1 				;INICIALIZAMOS LAS VARIABLES
+     2 = 00CB			PT.1 =  $CB
+     3 = C000			ROM.INICIO = $C000
+     4 				;
+     5 				;
+     6 = 0600			ROMRAM.INICIO = $0600
+     7 				;
+     8 				;
+     9 					org ROMRAM.INICIO
+    10 FFFF> 0600-063B> AD 0E + 	LDA NMIEN
+    11 0603 48				PHA
+    12 0604 A9 FF			LDA #$FF
+    13 0606 8D 01 D3			STA PORTB
+    14 0609 78				SEI
+    15 060A A9 00			LDA # <ROM.INICIO
+    16 060C 85 CB			STA PT.1
+    17 060E A9 C0			LDA # >ROM.INICIO
+    18 0610 85 CC			STA PT.1+1
+    19 0612 A0 00			LDY #$00
+    20 0614 8C 0E D4			STY NMIEN
+    21 0617			ROMRAM.LOOP
+    22 0617 B1 CB			LDA (PT.1),Y
+    23 0619 CE 01 D3			DEC PORTB
+    24 061C 91 CB			STA (PT.1),Y
+    25 061E EE 01 D3			INC PORTB
+    26 0621 C8				INY
+    27 0622 D0 F3			BNE ROMRAM.LOOP
+    28 0624 E6 CC			INC PT.1+1
+    29 0626 F0 0C			BEQ ROMRAM.FIN
+    30 0628 A5 CC			LDA PT.1+1
+    31 062A C9 D0			CMP #$D0
+    32 062C D0 E9			BNE ROMRAM.LOOP
+    33 062E A9 D8			LDA #$D8
+    34 0630 85 CC			STA PT.1+1
+    35 0632 D0 E3			BNE ROMRAM.LOOP
+    36 0634			ROMRAM.FIN
+    37 0634 68				PLA
+    38 0635 8D 0E D4			STA NMIEN
+    39 0638 58				CLI
+    40 0639 60				RTS
+    41 					*=  INITAD
+    42 063A 00 06			.WORD ROMRAM.INICIO
+     5 063C				icl 'paginas/pal.asm'
+Source: C:\Users\dogdark\eclipse-workspace\misproyectos\tt\paginas\pal.asm
+     1 				; INICIALIZAMOS LAS VARIABLES
+     2 = 0600			INICIO.PAL = $0600
+     3 063C				org INICIO.PAL
+     4 0600			DETECTA.PAL
+     5 0600-0623> AD 0B D4		LDA VCOUNT
+     6 0603 C9 64			CMP #100
+     7 0605 D0 F9			BNE DETECTA.PAL ;BUSCA SCANLINE 100
+     8 0607 A9 02			LDA #2
+     9 0609 8D 1C 02			STA CDTMV3  ; 2 BARRIDOS DE PANTALLA
+    10 060C A9 00			LDA #$00
+    11 060E 8D 1D 02			STA CDTMV3+1 ;SOLO 2 BARRIDOS
+    12 0611			DETECTA.PAL.LOOP
+    13 0611 AD 0B D4			LDA VCOUNT
+    14 0614 C9 87			CMP #135
+    15 0616 F0 07			BEQ DETECTA.PAL.SI.PAL
+    16 0618 AD 1C 02			LDA CDTMV3  ; 2 BARRIDOS?
+    17 061B D0 F4			BNE DETECTA.PAL.LOOP ; NO!
+    18 061D F0 02			BEQ DETECTA.PAL.NTSC ;ES NTSC!
+    19 061F			DETECTA.PAL.SI.PAL
+    20 061F A9 01			LDA #$01
+    21 0621			DETECTA.PAL.NTSC
+    22 0621 85 00			STA PALNTS
+    23 0623 60				RTS
+     6 0624				icl 'paginas/tenis1.asm'
+Source: C:\Users\dogdark\eclipse-workspace\misproyectos\tt\paginas\tenis1.asm
+     1 = 00B3			turbo	= $b3
+     2 = 05CC			B00600 = $05CC  ;TIMER 600 BPS
+     3 = 0457			B00800 = $0457  ;TIMER 800 BPS
+     4 0624				org $D301
+     5 D301-D301> FE			.BY $FE
+     6 D302				org $BC20
+     7 BC20-BC22> 01			.BY 1
+     8 BC21 00 BB			.WO NEWDL
+     9 BC23			VOLVERE
+    10 BC23				org  $BB00
+    11 BB00			NEWDL
+    12 BB00-BB3E> 70 70 42		.BY 112,112,66
+    13 BB03 09 BB			.WO LINE0
+    14 BB05 30 01			.BY 48,1
+    15 BB07 23 BC			.WO VOLVERE
+    16 BB09			LINE0
+    17 BB09 80 80 A3 AF AE 80		.SB +128,"  CON "
+    18 BB0F 33				.sb "S"
+    19 BB10 F5 E2 F2 F5 F4 E9 + 	.sb +128,"ubrutina    C-"
+    20 BB1E			C?
+    21 BB1E 90 90 90 80 B3 A9 + 	.SB +128,"000 SIN "
+    22 BB26 32				.sb "R"
+    23 BB27 E5 F3 E5 F4 80 80		.sb +128,"eset  "
+    24 BB2D			MENSAJE.TV
+    25 BB2D 80 80 80 80				.SB +128,"    "
+    26 BB31 A3 AF AE		CON 	.SB +128,"CON"
+    27 BB34 B3 A9 AE		SIN 	.SB +128,"SIN"
+    28 BB37 30 30 30 9B		SECTOR	.BY "000",$9B
+    29 BB3B 32 2E 33 9B		FACTOR	.BY "2.3",$9B
+    30 BB3F				org $8000
+    31 8000			MENSAJE.NTSC
+    32 8000-8009> AE B4 B3 A3		.SB +128,"NTSC"
+    33 8004			MENSAJE.PAL
+    34 8004 B0 A1 AC 80			.SB +128,"PAL "
+    35 8008 00			EORBYTE 	.BY $00
+    36 8009 00			BYTEMULA	.BY $00
+     7 800A				icl 'paginas/tenis2.asm'
+Source: C:\Users\dogdark\eclipse-workspace\misproyectos\tt\paginas\tenis2.asm
+     8 					
